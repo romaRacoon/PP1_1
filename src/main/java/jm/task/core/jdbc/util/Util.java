@@ -11,13 +11,15 @@ public class Util {
     private static Connection connection;
     private static Statement statement;
 
-    private void createStatement() {
+    private void createStatement() throws SQLException {
         try {
             statement = connection.createStatement();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    private void
 
     public void installConnection() {
         try {

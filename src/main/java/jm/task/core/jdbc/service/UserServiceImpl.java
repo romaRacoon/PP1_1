@@ -5,6 +5,8 @@ import jm.task.core.jdbc.model.User;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
+    private final String TABLE_NAME = "User";
+
     public void createUsersTable() {
 
     }

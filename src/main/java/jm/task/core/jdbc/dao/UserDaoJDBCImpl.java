@@ -10,6 +10,8 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void createUsersTable() {
+        String inputCommand = "CREATE TABLE User " +
+                "(Id INT, Name VARCHAR(100), LastName VARCHAR(100), Age TINYINT);";
 
     }
 
