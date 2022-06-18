@@ -4,29 +4,19 @@ import java.sql.*;
 
 public class Util {
     // реализуйте настройку соеденения с БД
-    private final String NAME = "root";
-    private final String PASSWORD = "rickandmortyroman1M";
-    private final String URL = "jdbc:mysql://localhost:3306/testwirhutf";
+    private static final String NAME = "root";
+    private static final String PASSWORD = "rickandmortyroman1M";
+    private static final String URL = "jdbc:mysql://localhost:3306/testwirhutf";
 
-    private static Connection connection;
-    private static Statement statement;
+    public static Connection getConnection() {
+        Connection connection = null;
 
-    private void createStatement() throws SQLException {
-        try {
-            statement = connection.createStatement();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void
-
-    public void installConnection() {
         try {
             connection = DriverManager.getConnection(URL, NAME, PASSWORD);
-            createStatement();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return connection;
     }
 }
