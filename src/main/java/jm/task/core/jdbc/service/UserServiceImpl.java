@@ -9,15 +9,13 @@ import java.util.List;
 
 public class UserServiceImpl implements UserService {
     public void createUsersTable() {
-        dropUsersTable();
-
-        String command = "CREATE TABLE Users(Id BIGINT PRIMARY KEY AUTO_INCREMENT, " +
+        String command = "CREATE TABLE IF NOT EXISTS Users(Id BIGINT PRIMARY KEY AUTO_INCREMENT, " +
                 "Name VARCHAR(80), LastName VARCHAR(80), Age TINYINT);";
-        try (Connection connection = Util.getConnection()){
-            Statement statement = connection.createStatement();
+        Statement statement = null;
+        try {
+            statement = Util.getConnection().createStatement();
             statement.executeUpdate(command);
         } catch (SQLException e) {
-            System.out.println("Не удалось создать таблицу");
             throw new RuntimeException(e);
         }
     }
@@ -34,7 +32,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        String command = "INSERT INTO Users(Name, LastName, Age) " +
+        String command = "INSERT INTO IF NOT EXISTS Users(Name, LastName, Age) " +
                 String.format("VALUES('%s', '%s', '%s');", name, lastName, age);
         try (Connection connection = Util.getConnection()){
             Statement statement = connection.createStatement();
