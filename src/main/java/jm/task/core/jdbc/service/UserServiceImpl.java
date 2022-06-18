@@ -8,31 +8,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
-
     private boolean ifTableExists(Connection connection, String tableName) {
+        ResultSet resultSet = null;
 
+        try {
+            resultSet = connection.getMetaData().getTables(null, null, tableName, null);
+            if (resultSet.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return false;
     }
 
     public void createUsersTable() {
         String command = "CREATE TABLE IF NOT EXISTS Users(Id BIGINT PRIMARY KEY AUTO_INCREMENT, " +
                 "Name VARCHAR(80), LastName VARCHAR(80), Age TINYINT);";
-        Statement statement = null;
-        try {
-            statement = Util.getConnection().createStatement();
-            statement.executeUpdate(command);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        if (ifTableExists(Util.getConnection(), "Users")) {
+            Statement statement = null;
+            try {
+                statement = Util.getConnection().createStatement();
+                statement.executeUpdate(command);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     public void dropUsersTable() {
         String command = "DROP TABLE Users;";
-        if (ifTableExists(Util.getConnection(), "Users")) {
-            try {
-                Statement statement = Util.getConnection().createStatement();
+        if (ifTableExists(Util.getConnection(), "Users") == false) {
+            try (Statement statement = Util.getConnection().createStatement()){
                 statement.executeUpdate(command);
             } catch (SQLException e) {
-                System.out.println(1111);
                 throw new RuntimeException(e);
             }
         }
