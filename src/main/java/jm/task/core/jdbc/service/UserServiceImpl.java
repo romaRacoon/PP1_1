@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
+
+    private boolean ifTableExists(Connection connection, String tableName) {
+
+    }
+
     public void createUsersTable() {
         String command = "CREATE TABLE IF NOT EXISTS Users(Id BIGINT PRIMARY KEY AUTO_INCREMENT, " +
                 "Name VARCHAR(80), LastName VARCHAR(80), Age TINYINT);";
@@ -21,18 +26,20 @@ public class UserServiceImpl implements UserService {
     }
 
     public void dropUsersTable() {
-        String command = "DROP TABLE Users";
-        try (Connection connection = Util.getConnection()) {
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(command);
-        } catch (SQLException e) {
-            System.out.println("Не удалось удалить таблицу");
-            throw new RuntimeException(e);
+        String command = "DROP TABLE Users;";
+        if (ifTableExists(Util.getConnection(), "Users")) {
+            try {
+                Statement statement = Util.getConnection().createStatement();
+                statement.executeUpdate(command);
+            } catch (SQLException e) {
+                System.out.println(1111);
+                throw new RuntimeException(e);
+            }
         }
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        String command = "INSERT INTO IF NOT EXISTS Users(Name, LastName, Age) " +
+        String command = "INSERT INTO Users(Name, LastName, Age) " +
                 String.format("VALUES('%s', '%s', '%s');", name, lastName, age);
         try (Connection connection = Util.getConnection()){
             Statement statement = connection.createStatement();
@@ -45,7 +52,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void removeUserById(long id) {
-        String command = String.format("DELETE FROM Users WHERE Id = %s;", id);
+        String command = String.format("DELETE FROM Users WHERE Id = %s;", id - 1);
         try (Connection connection = Util.getConnection()){
 
         } catch (SQLException e) {
