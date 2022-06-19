@@ -62,7 +62,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "Имя - " + name + "; Фамилия - "
+        return "Имя - " + name + "; Фамилия/ - "
                 + lastName + "; Возраст - " + age + " " + id;
     }
 }
