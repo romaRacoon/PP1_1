@@ -9,8 +9,6 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         // реализуйте алгоритм здесь
-        Util util = new Util();
-        util.getConnection();
         UserDaoJDBCImpl userDao = new UserDaoJDBCImpl();
         userDao.createUsersTable();
         userDao.saveUser("Роман", "Артеменков", (byte) 19);

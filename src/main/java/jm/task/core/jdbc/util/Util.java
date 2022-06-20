@@ -25,19 +25,4 @@ public class Util {
 
         return connection;
     }
-
-    public static SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
-            try {
-                Configuration configuration = new Configuration().configure();
-                configuration.addAnnotatedClass(User.class);
-                StandardServiceRegistryBuilder standardServiceRegistryBuilder = new StandardServiceRegistryBuilder();
-                sessionFactory = configuration.buildSessionFactory(standardServiceRegistryBuilder.build());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        return sessionFactory;
-    }
 }
