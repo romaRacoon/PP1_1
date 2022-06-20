@@ -12,7 +12,6 @@ public class Util {
     private static final String NAME = "root";
     private static final String PASSWORD = "rickandmortyroman1M";
     private static final String URL = "jdbc:mysql://localhost:3306/testwirhutf";
-    private static SessionFactory sessionFactory;
 
     public static Connection getConnection() {
         Connection connection = null;
@@ -24,5 +23,17 @@ public class Util {
         }
 
         return connection;
+    }
+
+    public static void closeConnection() {
+        Connection connection = getConnection();
+
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

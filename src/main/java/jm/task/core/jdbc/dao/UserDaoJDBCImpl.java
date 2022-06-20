@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
-    private Connection connection;
+    private Connection connection = Util.getConnection();
 
     public UserDaoJDBCImpl() {
-        connection = Util.getConnection();
+
     }
 
     private boolean ifTableExists(Connection connection, String tableName) {
@@ -32,30 +32,39 @@ public class UserDaoJDBCImpl implements UserDao {
     public void createUsersTable() {
         String command = "CREATE TABLE IF NOT EXISTS Users(Id BIGINT PRIMARY KEY AUTO_INCREMENT, " +
                 "Name VARCHAR(80), LastName VARCHAR(80), Age TINYINT);";
-        if (ifTableExists(connection, "Users")) {
-            Statement statement = null;
-            try {
-                statement = Util.getConnection().createStatement();
-                statement.executeUpdate(command);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+        ResultSet resultSet = null;
+
+        try {
+            resultSet = connection.getMetaData().getTables(null, null, "Users", null);
+            if (resultSet.next()) {
+                try (Statement statement = connection.createStatement()) {
+                    statement.executeUpdate(command);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
     public void dropUsersTable() {
         String command = "DROP TABLE Users;";
-        if (ifTableExists(Util.getConnection(), "Users") == false) {
-            try (Statement statement = Util.getConnection().createStatement()){
-                statement.executeUpdate(command);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+        ResultSet resultSet = null;
+        try {
+            resultSet = connection.getMetaData().getTables(null, null, "Users", null);
+            if (resultSet.next() == false) {
+                try (Statement statement = connection.createStatement()){
+                    statement.executeUpdate(command);
+                }
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        String command = "INSERT INTO Users(Name, LastName, Age) VALUES('?', '?', '?');";
+        String command = "INSERT INTO Users(Name, LastName, Age) VALUES(?, ?, ?);";
         try (PreparedStatement preparedStatement = connection.prepareStatement(command)){
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, lastName);
