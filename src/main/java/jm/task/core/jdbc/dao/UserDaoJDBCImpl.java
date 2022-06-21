@@ -14,29 +14,12 @@ public class UserDaoJDBCImpl implements UserDao {
 
     }
 
-    private boolean ifTableExists(Connection connection, String tableName) {
-        ResultSet resultSet = null;
-
-        try {
-            resultSet = connection.getMetaData().getTables(null, null, tableName, null);
-            if (resultSet.next()) {
-                return true;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return false;
-    }
-
     public void createUsersTable() {
         String command = "CREATE TABLE IF NOT EXISTS Users(Id BIGINT PRIMARY KEY AUTO_INCREMENT, " +
                 "Name VARCHAR(80), LastName VARCHAR(80), Age TINYINT);";
-        ResultSet resultSet = null;
 
         try {
-            resultSet = connection.getMetaData().getTables(null, null, "Users", null);
-            if (resultSet.next()) {
+            if (connection.getMetaData().getTables(null, null, "Users", null).next()) {
                 try (Statement statement = connection.createStatement()) {
                     statement.executeUpdate(command);
                 } catch (SQLException e) {
@@ -50,10 +33,8 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void dropUsersTable() {
         String command = "DROP TABLE Users;";
-        ResultSet resultSet = null;
         try {
-            resultSet = connection.getMetaData().getTables(null, null, "Users", null);
-            if (resultSet.next() == false) {
+            if (connection.getMetaData().getTables(null, null, "Users", null).next() == false) {
                 try (Statement statement = connection.createStatement()){
                     statement.executeUpdate(command);
                 }
