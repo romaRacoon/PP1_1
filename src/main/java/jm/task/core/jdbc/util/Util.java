@@ -49,31 +49,24 @@ public class Util {
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             try {
-
-                // Create registry builder
                 StandardServiceRegistryBuilder registryBuilder = new StandardServiceRegistryBuilder();
 
-                // Hibernate settings equivalent to hibernate.cfg.xml's properties
                 Map<String, String> settings = new HashMap<>();
                 settings.put(Environment.DRIVER, DRIVER);
                 settings.put(Environment.URL, URL);
                 settings.put(Environment.USER, NAME);
                 settings.put(Environment.PASS, PASSWORD);
                 settings.put(Environment.DIALECT, DIALECT);
+                settings.put(Environment.SHOW_SQL, "true");
 
-                // Apply settings
                 registryBuilder.applySettings(settings);
 
-                // Create registry
                 registry = registryBuilder.build();
 
-                // Create MetadataSources
                 MetadataSources sources = new MetadataSources(registry);
 
-                // Create Metadata
                 Metadata metadata = sources.getMetadataBuilder().build();
 
-                // Create SessionFactory
                 sessionFactory = metadata.getSessionFactoryBuilder().build();
 
             } catch (Exception e) {
