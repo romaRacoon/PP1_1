@@ -23,6 +23,7 @@ public class UserDaoHibernateImpl implements UserDao {
                     "Name VARCHAR(80), LastName VARCHAR(80), Age TINYINT);";
             Transaction transaction = session.beginTransaction();
             Query query = session.createSQLQuery(command).addEntity(User.class);
+
             query.executeUpdate();
             transaction.commit();
         } catch (Exception e) {
@@ -33,16 +34,18 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void dropUsersTable() {
-        Session session = Util.getSessionFactory().openSession();
-        Transaction transaction = session.beginTransaction();
+        try (Session session = Util.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
 
-        String command = "DROP TABLE IF EXISTS Users";
+            String command = "DROP TABLE IF EXISTS Users";
 
-        Query query = session.createSQLQuery(command).addEntity(User.class);
-
-        transaction.commit();
-        session.close();
-        query.executeUpdate();
+            Query query = session.createSQLQuery(command).addEntity(User.class);
+            query.executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println("Не удалось удалить таблицу");
+            e.printStackTrace();
+        }
     }
 
     @Override

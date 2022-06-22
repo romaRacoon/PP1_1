@@ -24,5 +24,6 @@ public class Main {
 
         UserDao userDao1 = new UserDaoHibernateImpl();
         userDao1.createUsersTable();
+        userDao1.dropUsersTable();
     }
 }
