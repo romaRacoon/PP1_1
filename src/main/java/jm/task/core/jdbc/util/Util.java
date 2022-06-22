@@ -73,4 +73,10 @@ public class Util {
         }
         return sessionFactory;
     }
+
+    public static void disconnect() {
+        if (sessionFactory != null) {
+            sessionFactory.close();
+        }
+    }
 }

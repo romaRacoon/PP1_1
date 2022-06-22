@@ -27,5 +27,10 @@ public class Main {
         userDao1.saveUser("Роман", "Артеменков", (byte) 19);
         userDao1.saveUser("Дмитрий", "Задорнов", (byte) 20);
         userDao1.saveUser("Сергей", "Огородов", (byte) 22);
+        List<User> users1 = userDao1.getAllUsers();
+        System.out.println(users1);
+        userDao1.cleanUsersTable();
+        userDao1.dropUsersTable();
+        Util.disconnect();
     }
 }
