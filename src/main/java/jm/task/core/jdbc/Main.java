@@ -24,6 +24,8 @@ public class Main {
 
         UserDao userDao1 = new UserDaoHibernateImpl();
         userDao1.createUsersTable();
-        userDao1.dropUsersTable();
+        userDao1.saveUser("Роман", "Артеменков", (byte) 19);
+        userDao1.saveUser("Дмитрий", "Задорнов", (byte) 20);
+        userDao1.saveUser("Сергей", "Огородов", (byte) 22);
     }
 }
