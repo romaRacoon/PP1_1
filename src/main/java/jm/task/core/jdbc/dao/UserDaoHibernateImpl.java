@@ -71,6 +71,7 @@ public class UserDaoHibernateImpl implements UserDao {
             User user = session.get(User.class, id);
             session.delete(user);
         } catch (Exception e) {
+            System.out.println("Не удалось удалить пользователя из бд");
             e.printStackTrace();
         }
     }
