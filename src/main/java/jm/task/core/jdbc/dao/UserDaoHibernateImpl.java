@@ -50,12 +50,26 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
+        User addeduser = new User(name, lastName, age);
 
+        try (Session session = Util.getSessionFactory().openSession()){
+            Transaction transaction = session.beginTransaction();
+            session.save(addeduser);
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println("Не удалось сохранить пользователя в бд");
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void removeUserById(long id) {
-
+        try (Session session = Util.getSessionFactory().openSession()) {
+            session.beginTransaction().begin();
+            User removedUser = (User)session.get(User.class, id);
+            session.delete(removedUser);
+            session.flush();
+        }
     }
 
     @Override
