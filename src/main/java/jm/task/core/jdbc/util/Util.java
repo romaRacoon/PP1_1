@@ -43,40 +43,4 @@ public class Util {
             }
         }
     }
-
-    public static SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
-            try {
-                Configuration configuration = new Configuration();
-                Properties settings = new Properties();
-
-                settings.put(Environment.DRIVER, DRIVER);
-                settings.put(Environment.URL, URL);
-                settings.put(Environment.USER, NAME);
-                settings.put(Environment.PASS, PASSWORD);
-                settings.put(Environment.DIALECT, DIALECT);
-                settings.put(Environment.SHOW_SQL, "true");
-                settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-                settings.put(Environment.HBM2DDL_AUTO, "create-drop");
-
-                configuration.setProperties(settings);
-                configuration.addAnnotatedClass(User.class);
-
-                ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-                        .applySettings(configuration.getProperties()).build();
-
-                sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-            } catch (Exception e) {
-                System.out.println("Problem creating session factory");
-                e.printStackTrace();
-            }
-        }
-        return sessionFactory;
-    }
-
-    public static void disconnect() {
-        if (sessionFactory != null) {
-            sessionFactory.close();
-        }
-    }
 }
