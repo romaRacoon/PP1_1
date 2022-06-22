@@ -4,6 +4,7 @@ import jm.task.core.jdbc.dao.UserDao;
 import jm.task.core.jdbc.dao.UserDaoJDBCImpl;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
+import org.hibernate.Session;
 
 import java.util.List;
 
@@ -20,5 +21,7 @@ public class Main {
         userDao.cleanUsersTable();
         userDao.dropUsersTable();
         Util.closeConnection();
+
+        Session session = Util.getSessionFactory().openSession();
     }
 }
