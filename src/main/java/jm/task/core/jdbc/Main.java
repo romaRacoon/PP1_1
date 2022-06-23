@@ -10,6 +10,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+
         // реализуйте алгоритм здесь
         UserDao userDao = new UserDaoJDBCImpl();
         userDao.createUsersTable();
