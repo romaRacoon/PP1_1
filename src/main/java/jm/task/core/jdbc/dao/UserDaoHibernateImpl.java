@@ -89,7 +89,6 @@ public class UserDaoHibernateImpl implements UserDao {
         }
     }
 
-
     @Override
     public List<User> getAllUsers() {
         CriteriaBuilder criteriaBuilder = getSessionFactory().openSession().getCriteriaBuilder();
