@@ -16,6 +16,7 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void dropUsersTable() {
+        1/
     }
 
     @Override
